@@ -13,4 +13,5 @@ public class Festival {
     private String imgCartel;
     private String imgLogo;
     private String webURL;
+    private List<String> generos;
 }
