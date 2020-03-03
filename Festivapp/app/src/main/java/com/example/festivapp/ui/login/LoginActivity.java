@@ -23,10 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.festivapp.FormularioRegistroActivity;
 import com.example.festivapp.R;
-import com.example.festivapp.ui.login.LoginViewModel;
-import com.example.festivapp.ui.login.LoginViewModelFactory;
+import com.example.festivapp.ui.registro.RegistroActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -133,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void registraUsuario(View view) {
         /* Mandamos al usuario al formulario de registro de usuario */
-        Intent intent = new Intent(this, FormularioRegistroActivity.class);
+        Intent intent = new Intent(this, RegistroActivity.class);
         startActivity(intent);
     }
 }

@@ -2,15 +2,19 @@
     <string name="app_name">Festivapp</string>
     <!-- Strings relacionados con login -->
     <string name="prompt_email">Email/Username</string>
-    <string name="prompt_password">Password</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_email_registro">Email</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="prompt_password_repetir">Vuelva a introducir la contraseña</string>
     <string name="action_log_in">Log in</string>
-    <string name="action_register">Registrarse</string>
+    <string name="action_register">Registrar</string>
     <string name="mensajeNoRegistrado">¿No estás registrado? ¡Regístrate ahora!</string>
     <string name="welcome">"Bienvenido de nuevo !"</string>
     <string name="invalid_username">Usuario inválido</string>
     <string name="invalid_password">La contraseña debe tener >5 caracteres</string>
+    <string name="invalid_email">Email inválido</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_select_generos">SelectGenerosActivity</string>
+    <string name="register_failed">"Register failed"</string>
     <!-- Strings relacionados con RegistrarUsuario -->
     <!-- Strings relacionados con SelecArtistas -->
     <!-- Strings relacionados con SelecGeneros -->

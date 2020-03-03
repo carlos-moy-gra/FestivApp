@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".RegistroActivity">
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:autofillHints=""
+        android:hint="@string/prompt_username"
+        android:inputType="textPersonName"
+        tools:targetApi="o" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/prompt_email_registro"
+        android:inputType="textEmailAddress" tools:targetApi="o"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <EditText
+        android:id="@+id/password1"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword" tools:targetApi="o"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <EditText
+        android:id="@+id/password2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/prompt_password_repetir"
+        android:inputType="textPassword" tools:targetApi="o"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <Button
+        android:id="@+id/boton_continuar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:width="@android:dimen/thumbnail_width"
+        android:background="#037BF4"
+        android:text="@string/action_register" />
+
+</LinearLayout>
