@@ -28,14 +28,17 @@ public class RegistroActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+
         registroViewModel = ViewModelProviders.of(this, new RegistroViewModelFactory())
                 .get(RegistroViewModel.class);
 
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText emailEditText = findViewById(R.id.email);
-        final EditText password_1_EditText = findViewById(R.id.password1);
-        final EditText password_2_EditText = findViewById(R.id.password2);
-        final Button registerButton = findViewById(R.id.register);
+
+        final EditText usernameEditText = findViewById(R.id.registro_username);
+        final EditText emailEditText = findViewById(R.id.registro_email);
+        final EditText password_1_EditText = findViewById(R.id.registro_password1);
+        final EditText password_2_EditText = findViewById(R.id.registro_password2);
+        final Button registerButton = findViewById(R.id.registro_register);
+
 
         registroViewModel.getRegistroFormState().observe(this, new Observer<RegistroFormState>() {
             @Override
@@ -96,11 +99,10 @@ public class RegistroActivity extends AppCompatActivity {
         emailEditText.addTextChangedListener(afterTextChangedListener);
         password_1_EditText.addTextChangedListener(afterTextChangedListener);
         password_2_EditText.addTextChangedListener(afterTextChangedListener);
-        password_1_EditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
+        password_2_EditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            // Escuchador de intro (cuidado con esto)
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                //?????????????????????????
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     registroViewModel.registrar(usernameEditText.getText().toString(),
                             emailEditText.getText().toString(),
@@ -118,6 +120,7 @@ public class RegistroActivity extends AppCompatActivity {
                         password_1_EditText.getText().toString());
             }
         });
+
     }
 
     private void showRegistroFailed(@StringRes Integer errorString) {

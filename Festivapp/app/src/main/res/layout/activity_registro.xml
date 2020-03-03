@@ -9,7 +9,7 @@
     tools:context=".RegistroActivity">
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/registro_username"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -23,7 +23,7 @@
         android:layout_height="7dp" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/registro_email"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:autofillHints=""
@@ -35,7 +35,7 @@
         android:layout_height="7dp" />
 
     <EditText
-        android:id="@+id/password1"
+        android:id="@+id/registro_password1"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:autofillHints=""
@@ -47,7 +47,7 @@
         android:layout_height="7dp" />
 
     <EditText
-        android:id="@+id/password2"
+        android:id="@+id/registro_password2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:autofillHints=""
@@ -59,7 +59,7 @@
         android:layout_height="7dp" />
 
     <Button
-        android:id="@+id/boton_continuar"
+        android:id="@+id/registro_register"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:width="@android:dimen/thumbnail_width"

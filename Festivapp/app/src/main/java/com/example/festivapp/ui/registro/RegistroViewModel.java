@@ -38,7 +38,7 @@ public class RegistroViewModel extends ViewModel {
         } else if (!isEmailValid(email)) {
             registroFormState.setValue(new RegistroFormState(null, R.string.invalid_email, null));
         } else if (!isPasswordValid(password1, password2)) {
-            registroFormState.setValue(new RegistroFormState(null, null, R.string.invalid_password));
+            registroFormState.setValue(new RegistroFormState(null, null, R.string.invalid_password_registro));
         } else {
             registroFormState.setValue(new RegistroFormState(true));
         }

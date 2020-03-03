@@ -12,6 +12,7 @@
     <string name="welcome">"Bienvenido de nuevo !"</string>
     <string name="invalid_username">Usuario inválido</string>
     <string name="invalid_password">La contraseña debe tener >5 caracteres</string>
+    <string name="invalid_password_registro">Las contraseñas no coinciden</string>
     <string name="invalid_email">Email inválido</string>
     <string name="login_failed">"Login failed"</string>
     <string name="register_failed">"Register failed"</string>

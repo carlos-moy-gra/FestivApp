@@ -17,7 +17,7 @@ public class RegistroFormState {
 
    RegistroFormState(@Nullable Integer usernameError, @Nullable Integer emailError, @Nullable Integer passwordError) {
         this.usernameError = usernameError;
-        this.emailError = usernameError;
+        this.emailError = emailError;
         this.passwordError = passwordError;
         this.isDataValid = false;
     }

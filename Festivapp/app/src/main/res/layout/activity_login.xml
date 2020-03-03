@@ -13,23 +13,26 @@
 
     <EditText
         android:id="@+id/username"
-        android:layout_width="331dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="172dp"
+        android:autofillHints=""
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="331dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="37dp"
+        android:autofillHints=""
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_log_in"
         android:imeOptions="actionDone"
@@ -37,11 +40,12 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        tools:targetApi="o" />
 
     <Button
         android:id="@+id/login"
-        android:layout_width="150dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/action_log_in"
@@ -64,7 +68,7 @@
 
     <Button
         android:id="@+id/register"
-        android:layout_width="150dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="88dp"
         android:gravity="center_horizontal"
@@ -72,10 +76,10 @@
         android:text="@string/action_register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/login"
-        app:layout_constraintVertical_bias="0.124" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/mensajeNoRegistrado"
