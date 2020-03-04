@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Festivapp</string>
-    <!-- Strings relacionados con login -->
+
+    <!-- Strings relacionados con login y registro -->
     <string name="prompt_email">Email/Username</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_email_registro">Email</string>
@@ -16,7 +17,8 @@
     <string name="invalid_email">Email inválido</string>
     <string name="login_failed">"Login failed"</string>
     <string name="register_failed">"Register failed"</string>
-    <!-- Strings relacionados con RegistrarUsuario -->
+
     <!-- Strings relacionados con SelecArtistas -->
-    <!-- Strings relacionados con SelecGeneros -->
+
+    <!-- Strings relacionados con GenerosActivity -->
 </resources>
