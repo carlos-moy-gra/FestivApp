@@ -17,6 +17,7 @@
     <string name="invalid_email">Email inválido</string>
     <string name="login_failed">"Login failed"</string>
     <string name="register_failed">"Register failed"</string>
+    <string name="checkbox">CheckBox</string>
 
     <!-- Strings relacionados con SelecArtistas -->
 

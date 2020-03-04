@@ -12,7 +12,12 @@
         android:orientation="vertical">
 
         <GridView
+            android:id="@+id/gridGeneros"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:numColumns="2"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
