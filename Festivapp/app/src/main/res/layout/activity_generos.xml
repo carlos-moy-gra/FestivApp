@@ -7,17 +7,34 @@
     tools:context=".ui.GenerosActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <androidx.legacy.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="15dp"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="¿Qué géneros te gusta escuchar?"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="15dp"/>
 
         <GridView
             android:id="@+id/gridGeneros"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top"
+            android:horizontalSpacing="10dp"
             android:numColumns="2"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"/>
+            android:verticalSpacing="10dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

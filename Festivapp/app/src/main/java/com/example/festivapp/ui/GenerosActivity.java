@@ -20,7 +20,7 @@ public class GenerosActivity extends AppCompatActivity {
     private GridView gridView;
     private GenerosGridAdapter adapter;
 
-    ArrayList<String> arrayList = new ArrayList<>();
+    ArrayList<String> listaGeneros = new ArrayList<>();
     // poblar, no se xq no deja
     // arrayList.add("Genero");
 
@@ -30,7 +30,7 @@ public class GenerosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_generos);
 
         GridView gridGeneros = (GridView)findViewById(R.id.gridGeneros);
-        adapter = new GenerosGridAdapter(this,arrayList);
+        adapter = new GenerosGridAdapter(this,listaGeneros);
         gridView.setAdapter(adapter);
 
         /* Accion al pinchar en un elemento
