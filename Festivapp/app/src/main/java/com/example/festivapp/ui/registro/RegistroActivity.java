@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -33,12 +30,11 @@ public class RegistroActivity extends AppCompatActivity {
                 .get(RegistroViewModel.class);
 
 
-        final EditText usernameEditText = findViewById(R.id.registro_username);
+        final EditText usernameEditText = findViewById(R.id.registro_nombre_completo);
         final EditText emailEditText = findViewById(R.id.registro_email);
         final EditText password_1_EditText = findViewById(R.id.registro_password1);
         final EditText password_2_EditText = findViewById(R.id.registro_password2);
         final Button registerButton = findViewById(R.id.registro_register);
-
 
         registroViewModel.getRegistroFormState().observe(this, new Observer<RegistroFormState>() {
             @Override
@@ -99,18 +95,6 @@ public class RegistroActivity extends AppCompatActivity {
         emailEditText.addTextChangedListener(afterTextChangedListener);
         password_1_EditText.addTextChangedListener(afterTextChangedListener);
         password_2_EditText.addTextChangedListener(afterTextChangedListener);
-        password_2_EditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            // Escuchador de intro (cuidado con esto)
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    registroViewModel.registrar(usernameEditText.getText().toString(),
-                            emailEditText.getText().toString(),
-                            password_1_EditText.getText().toString());
-                }
-                return false;
-            }
-        });
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override

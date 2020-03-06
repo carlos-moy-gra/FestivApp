@@ -6,18 +6,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.festivapp.data.LoginRepository;
 import com.example.festivapp.R;
 
 public class RegistroViewModel extends ViewModel {
 
     private MutableLiveData<RegistroFormState> registroFormState = new MutableLiveData<>();
     private MutableLiveData<RegistroResult> registroResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
 
-    RegistroViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
-    }
+    RegistroViewModel() {}
 
     LiveData<RegistroFormState> getRegistroFormState() {
         return registroFormState;

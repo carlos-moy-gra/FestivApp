@@ -3,6 +3,7 @@
 
     <!-- Strings relacionados con login y registro -->
     <string name="prompt_email">Email/Username</string>
+    <string name="prompt_nombre_completo">Nombre completo</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_email_registro">Email</string>
     <string name="prompt_password">Contraseña</string>

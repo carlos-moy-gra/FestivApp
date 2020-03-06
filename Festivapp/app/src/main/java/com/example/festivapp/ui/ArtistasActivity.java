@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.festivapp.R;
+
 public class ArtistasActivity extends AppCompatActivity {
 
     @Override
