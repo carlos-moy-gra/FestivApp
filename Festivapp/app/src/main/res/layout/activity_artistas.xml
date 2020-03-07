@@ -22,6 +22,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:hint="¿Quieres seguir a algún artista?" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
