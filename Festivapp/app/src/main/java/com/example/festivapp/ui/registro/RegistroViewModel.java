@@ -1,22 +1,38 @@
 package com.example.festivapp.ui.registro;
 
+import android.util.Log;
 import android.util.Patterns;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.festivapp.data.LoginRepository;
 import com.example.festivapp.R;
+import com.example.festivapp.ui.login.LoggedInUserView;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+
+import org.json.JSONArray;
+
+import java.util.List;
+
+import static com.parse.Parse.getApplicationContext;
 
 public class RegistroViewModel extends ViewModel {
 
     private MutableLiveData<RegistroFormState> registroFormState = new MutableLiveData<>();
     private MutableLiveData<RegistroResult> registroResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+    private boolean existeEmailEnBD;
+    private boolean existeUsernameEnBD;
 
-    RegistroViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    RegistroViewModel() {
+        this.existeEmailEnBD = false;
+        this.existeUsernameEnBD = false;
     }
 
     LiveData<RegistroFormState> getRegistroFormState() {
@@ -27,21 +43,62 @@ public class RegistroViewModel extends ViewModel {
         return registroResult;
     }
 
-    public void registrar(String username, String email, String password) {
-        // can be launched in a separate asynchronous job
-        // TODO: comprobar resultado de proceso de registro de usuario
+    public void registrar(String username, String email, String password, String nombreCompleto, String sexo) {
+
+        ParseUser user = new ParseUser();
+
+        // Campos básicos
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+
+        // Campos no básicos
+        user.put("nombre_completo", nombreCompleto);
+        user.put("sexo", sexo);
+        JSONArray jsonArray = new JSONArray();
+        user.put("artistas_seguidos", jsonArray);
+        user.put("generos_seguidos", jsonArray);
+        user.put("festivales_seguidos", jsonArray);
+        user.put("festivales_recomendados", jsonArray);
+
+        user.signUpInBackground(new SignUpCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.v("Registro correcto","logInInBackground()");
+                    registroResult.setValue(new RegistroResult(new LoggedInUserView(ParseUser.getCurrentUser().getString("nombre_completo"))));
+                } else {
+                    Log.v("Registro incorrecto","logInInBackground()");
+                    registroResult.setValue(new RegistroResult(R.string.register_failed));
+                }
+            }
+        });
     }
 
-    public void registroDataChanged(String username, String email, String password1, String password2) {
-        if (!isUserNameValid(username)) {
-            registroFormState.setValue(new RegistroFormState(R.string.invalid_username, null, null));
+    public void registroDataChanged(String nombreCompleto, String username, String email, String password1, String password2, boolean sex_hombre, boolean sex_mujer) {
+        if (!isNombreCompletoValid(nombreCompleto)) {
+            registroFormState.setValue(new RegistroFormState(R.string.invalid_nombre_completo, null, null, null, null));
+        } else if (!isUserNameValid(username)) {
+            registroFormState.setValue(new RegistroFormState(null, R.string.invalid_username, null, null, null));
         } else if (!isEmailValid(email)) {
-            registroFormState.setValue(new RegistroFormState(null, R.string.invalid_email, null));
+            registroFormState.setValue(new RegistroFormState(null, null, R.string.invalid_email, null, null));
         } else if (!isPasswordValid(password1, password2)) {
-            registroFormState.setValue(new RegistroFormState(null, null, R.string.invalid_password_registro));
+            registroFormState.setValue(new RegistroFormState(null, null, null, R.string.invalid_password_registro, null));
+        } else if (!isSexValid(sex_hombre, sex_mujer)) {
+            registroFormState.setValue(new RegistroFormState(null, null, null, null, R.string.invalid_sex_registro));
         } else {
             registroFormState.setValue(new RegistroFormState(true));
         }
+    }
+
+    // Validación de nombre completo
+    private boolean isNombreCompletoValid(String nombreCompleto) {
+        if (nombreCompleto == null) {
+            return false;
+        }
+        if (nombreCompleto.trim().isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     // Validación de username
@@ -52,12 +109,15 @@ public class RegistroViewModel extends ViewModel {
         if (username.trim().isEmpty()) {
             return false;
         }
-        // Comprobación de si existe el nombre de usuario en la BD (es lo que nos certifica la verdadera validez)
-        return true;
+        isUsernameInBD(username); // Comprobamos si existe el username en la BD
+        return !existeUsernameEnBD;
     }
 
     // Validación de email
     private boolean isEmailValid(String email) {
+        if (email == null) {
+            return false;
+        }
         if (email.contains("@")) {
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 return false;
@@ -65,12 +125,15 @@ public class RegistroViewModel extends ViewModel {
         } else {
             return false;
         }
-        // Comprobación del nombre de usuario en la BD (es lo que nos certifica la verdadera validez)
-        return true;
+        isEmailInBD(email); // Comprobamos si existe el email en la BD
+        return !existeEmailEnBD;
     }
 
     // Validación de contraseña
     private boolean isPasswordValid(String password1, String password2) {
+        if ((password1 == null) || (password2 == null)) {
+            return false;
+        }
         if (password1.trim().isEmpty() || password2.trim().isEmpty()) {
             return false;
         }
@@ -80,4 +143,76 @@ public class RegistroViewModel extends ViewModel {
         return true;
     }
 
+    // Validación de sexo
+    private boolean isSexValid(boolean sex_hombre, boolean sex_mujer) {
+        return (sex_hombre || sex_mujer);
+    }
+
+    private void isUsernameInBD(String username) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        query.whereEqualTo("username", username);
+        try {
+            List<ParseObject> resultList = query.find();
+            if (resultList.size() > 0) {
+                Log.d("User", "Username existe en la BD");
+                existeUsernameEnBD = true;
+            } else {
+                Log.d("User", "Username no existe en la BD");
+                existeUsernameEnBD = false;
+            }
+        } catch (final ParseException e) {
+            Log.d(null , "Error: " + e.getMessage());
+        }
+        /*
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> resultList, ParseException e) {
+                if (e == null) {
+                    if (resultList.size() > 0) {
+                        Log.d("User", "Username existe en la BD");
+                        existeUsernameEnBD = true;
+                    } else {
+                        Log.d("User", "Username no existe en la BD");
+                        existeUsernameEnBD = false;
+                    }
+                } else {
+                    Log.d(null , "Error: " + e.getMessage());
+                }
+            }
+        });
+        */
+    }
+
+    private void isEmailInBD(String email) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        query.whereEqualTo("email", email);
+        try {
+            List<ParseObject> resultList = query.find();
+            if (resultList.size() > 0) {
+                Log.d("User", "Email existe en la BD");
+                existeEmailEnBD = true;
+            } else {
+                Log.d("User", "Email no existe en la BD");
+                existeEmailEnBD = false;
+            }
+        } catch (final ParseException e) {
+            Log.d(null , "Error: " + e.getMessage());
+        }
+        /*
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> resultList, ParseException e) {
+                if (e == null) {
+                    if (resultList.size() > 0) {
+                        Log.d("User", "Email existe en la BD");
+                        existeEmailEnBD = true;
+                    } else {
+                        Log.d("User", "Email no existe en la BD");
+                        existeEmailEnBD = false;
+                    }
+                } else {
+                    Log.d(null , "Error: " + e.getMessage());
+                }
+            }
+        });
+        */
+    }
 }

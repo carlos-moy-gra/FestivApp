@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.festivapp.R;
+import com.parse.ParseUser;
 
 public class RegistroActivity extends AppCompatActivity {
 
@@ -27,18 +30,20 @@ public class RegistroActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ParseUser.getCurrentUser().logOut();
         setContentView(R.layout.activity_registro);
 
         registroViewModel = ViewModelProviders.of(this, new RegistroViewModelFactory())
                 .get(RegistroViewModel.class);
 
-
+        final EditText nombreCompletoEditText = findViewById(R.id.registro_nombre_completo);
         final EditText usernameEditText = findViewById(R.id.registro_username);
         final EditText emailEditText = findViewById(R.id.registro_email);
         final EditText password_1_EditText = findViewById(R.id.registro_password1);
         final EditText password_2_EditText = findViewById(R.id.registro_password2);
         final Button registerButton = findViewById(R.id.registro_register);
-
+        final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
+        final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
 
         registroViewModel.getRegistroFormState().observe(this, new Observer<RegistroFormState>() {
             @Override
@@ -46,7 +51,12 @@ public class RegistroActivity extends AppCompatActivity {
                 if (registroFormState == null) {
                     return;
                 }
+                // Invalidamos el botón de registrar si el estado del formulario es incorrecto
                 registerButton.setEnabled(registroFormState.isDataValid());
+                // Mostramos los errores
+                if (registroFormState.getNombreCompletoError() != null) {
+                   nombreCompletoEditText.setError(getString(registroFormState.getNombreCompletoError()));
+                }
                 if (registroFormState.getUsernameError() != null) {
                     usernameEditText.setError(getString(registroFormState.getUsernameError()));
                 }
@@ -56,6 +66,12 @@ public class RegistroActivity extends AppCompatActivity {
                 if (registroFormState.getPasswordError() != null) {
                     password_1_EditText.setError(getString(registroFormState.getPasswordError()));
                     password_2_EditText.setError(getString(registroFormState.getPasswordError()));
+                }
+                if (registroFormState.getSexError() != null) {
+                    String errorString = getString(registroFormState.getSexError());
+                    Toast toast = Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 0);
+                    toast.show();
                 }
             }
         });
@@ -67,7 +83,14 @@ public class RegistroActivity extends AppCompatActivity {
                     return;
                 }
                 if (registroResult.getError() != null) {
+                    // El registro ha fallado
                     showRegistroFailed(registroResult.getError());
+                } else {
+                    // El registro ha sido exitoso
+                    ParseUser.getCurrentUser().logOut();
+                    Toast toast = Toast.makeText(getApplicationContext(), "Registro correcto: " + ParseUser.getCurrentUser().get("nombre_completo"), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 0);
+                    toast.show();
                 }
                 setResult(Activity.RESULT_OK);
 
@@ -89,42 +112,115 @@ public class RegistroActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                registroViewModel.registroDataChanged(usernameEditText.getText().toString(),
+                registroViewModel.registroDataChanged(
+                        nombreCompletoEditText.getText().toString(),
+                        usernameEditText.getText().toString(),
                         emailEditText.getText().toString(),
                         password_1_EditText.getText().toString(),
-                        password_2_EditText.getText().toString());
+                        password_2_EditText.getText().toString(),
+                        radio_hombre.isChecked(),
+                        radio_mujer.isChecked());
             }
         };
+        nombreCompletoEditText.addTextChangedListener(afterTextChangedListener);
         usernameEditText.addTextChangedListener(afterTextChangedListener);
         emailEditText.addTextChangedListener(afterTextChangedListener);
         password_1_EditText.addTextChangedListener(afterTextChangedListener);
         password_2_EditText.addTextChangedListener(afterTextChangedListener);
+
+        /*
         password_2_EditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            // Escuchador de intro (cuidado con esto)
+
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                // Experimental
+                String sexo;
+                final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
+                final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
+                if (radio_mujer.isChecked())
+                    sexo = "Mujer";
+                else
+                    sexo = "Hombre";
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     registroViewModel.registrar(usernameEditText.getText().toString(),
                             emailEditText.getText().toString(),
-                            password_1_EditText.getText().toString());
+                            password_1_EditText.getText().toString(),
+                            nombreCompletoEditText.getText().toString(),
+                            sexo);
                 }
                 return false;
             }
         });
+         */
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String sexo;
+                final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
+                final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
+                if (radio_mujer.isChecked())
+                    sexo = "Mujer";
+                else
+                    sexo = "Hombre";
                 registroViewModel.registrar(usernameEditText.getText().toString(),
                         emailEditText.getText().toString(),
-                        password_1_EditText.getText().toString());
+                        password_1_EditText.getText().toString(),
+                        nombreCompletoEditText.getText().toString(),
+                        sexo);
             }
         });
 
     }
 
     private void showRegistroFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, 0);
+        toast.show();
+    }
+
+    public void onRadioButtonClicked(View view) {
+
+        final EditText nombreCompletoEditText = findViewById(R.id.registro_nombre_completo);
+        final EditText usernameEditText = findViewById(R.id.registro_nombre_completo);
+        final EditText emailEditText = findViewById(R.id.registro_email);
+        final EditText password_1_EditText = findViewById(R.id.registro_password1);
+        final EditText password_2_EditText = findViewById(R.id.registro_password2);
+
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.radio_hombre:
+                if (checked) {
+                    final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
+                    final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
+                    radio_mujer.setChecked(false);
+                    registroViewModel.registroDataChanged(
+                            nombreCompletoEditText.getText().toString(),
+                            usernameEditText.getText().toString(),
+                            emailEditText.getText().toString(),
+                            password_1_EditText.getText().toString(),
+                            password_2_EditText.getText().toString(),
+                            radio_hombre.isChecked(),
+                            radio_mujer.isChecked());
+                }
+                break;
+            case R.id.radio_mujer:
+                if (checked) {
+                    final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
+                    final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
+                    radio_hombre.setChecked(false);
+                    registroViewModel.registroDataChanged(
+                            nombreCompletoEditText.getText().toString(),
+                            usernameEditText.getText().toString(),
+                            emailEditText.getText().toString(),
+                            password_1_EditText.getText().toString(),
+                            password_2_EditText.getText().toString(),
+                            radio_hombre.isChecked(),
+                            radio_mujer.isChecked());
+                }
+                break;
+        }
     }
 
 }
