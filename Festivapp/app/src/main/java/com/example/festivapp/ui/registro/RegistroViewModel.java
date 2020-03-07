@@ -151,6 +151,19 @@ public class RegistroViewModel extends ViewModel {
     private void isUsernameInBD(String username) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
         query.whereEqualTo("username", username);
+        try {
+            List<ParseObject> resultList = query.find();
+            if (resultList.size() > 0) {
+                Log.d("User", "Username existe en la BD");
+                existeUsernameEnBD = true;
+            } else {
+                Log.d("User", "Username no existe en la BD");
+                existeUsernameEnBD = false;
+            }
+        } catch (final ParseException e) {
+            Log.d(null , "Error: " + e.getMessage());
+        }
+        /*
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> resultList, ParseException e) {
                 if (e == null) {
@@ -166,11 +179,25 @@ public class RegistroViewModel extends ViewModel {
                 }
             }
         });
+        */
     }
 
     private void isEmailInBD(String email) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
         query.whereEqualTo("email", email);
+        try {
+            List<ParseObject> resultList = query.find();
+            if (resultList.size() > 0) {
+                Log.d("User", "Email existe en la BD");
+                existeEmailEnBD = true;
+            } else {
+                Log.d("User", "Email no existe en la BD");
+                existeEmailEnBD = false;
+            }
+        } catch (final ParseException e) {
+            Log.d(null , "Error: " + e.getMessage());
+        }
+        /*
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> resultList, ParseException e) {
                 if (e == null) {
@@ -186,5 +213,6 @@ public class RegistroViewModel extends ViewModel {
                 }
             }
         });
+        */
     }
 }

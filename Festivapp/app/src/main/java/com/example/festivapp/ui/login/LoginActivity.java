@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.festivapp.R;
 import com.example.festivapp.ui.registro.RegistroActivity;
+import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ParseUser.getCurrentUser().logOut();
         setContentView(R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -126,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + " " + model.getDisplayName();
         // TODO : initiate successful logged in experience
+        ParseUser.getCurrentUser().logOut();
         Toast toast = Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();

@@ -30,6 +30,7 @@ public class RegistroActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ParseUser.getCurrentUser().logOut();
         setContentView(R.layout.activity_registro);
 
         registroViewModel = ViewModelProviders.of(this, new RegistroViewModelFactory())
@@ -86,6 +87,7 @@ public class RegistroActivity extends AppCompatActivity {
                     showRegistroFailed(registroResult.getError());
                 } else {
                     // El registro ha sido exitoso
+                    ParseUser.getCurrentUser().logOut();
                     Toast toast = Toast.makeText(getApplicationContext(), "Registro correcto: " + ParseUser.getCurrentUser().get("nombre_completo"), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 0);
                     toast.show();
