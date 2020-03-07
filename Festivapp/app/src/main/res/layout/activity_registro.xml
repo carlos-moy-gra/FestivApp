@@ -77,7 +77,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="85dp"
         android:text="Seleccione un sexo:"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:layout_marginEnd="85dp" />
 
     <Space
         android:layout_width="match_parent"
@@ -94,9 +95,10 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/radio_hombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
                 android:text="Hombre" />
 
             <Space
@@ -105,9 +107,10 @@
                 android:layout_weight="1" />
 
             <RadioButton
-                android:id="@+id/radioButton"
+                android:id="@+id/radio_mujer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
                 android:text="Mujer" />
         </LinearLayout>
 
