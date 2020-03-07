@@ -1,21 +1,24 @@
 package com.example.festivapp.ui;
 
 import android.content.Context;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.festivapp.R;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class GenerosGridAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<String> arrayList;
+    ArrayList<String> arrayList;
+    Map<String, String> generosSeguidos = new Hashtable<>();
 
     public GenerosGridAdapter (Context context, ArrayList<String> arrayList) {
         this.context = context;
@@ -39,12 +42,21 @@ public class GenerosGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.item_genero_grid,null);
         }
-        TextView titulo = (TextView)convertView.findViewById(R.id.item_titulo);
-        titulo.setText(arrayList.get(position));
+
+        TextView textView = convertView.findViewById(R.id.item_seleccion_genero);
+
+        if (generosSeguidos.containsKey(arrayList.get(position))) {
+            textView.setText("");
+            textView.setBackgroundResource(R.drawable.baseline_check_black_and_red);
+        } else {
+            textView.setText(arrayList.get(position));
+            textView.setBackgroundColor(0xFFFF4444);
+        }
         return convertView;
     }
 }
