@@ -1,6 +1,7 @@
 package com.example.festivapp.ui.registro;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.festivapp.R;
+import com.example.festivapp.ui.GenerosActivity;
 import com.parse.ParseUser;
 
 public class RegistroActivity extends AppCompatActivity {
@@ -53,6 +55,7 @@ public class RegistroActivity extends AppCompatActivity {
                 }
                 // Invalidamos el botón de registrar si el estado del formulario es incorrecto
                 registerButton.setEnabled(registroFormState.isDataValid());
+
                 // Mostramos los errores
                 if (registroFormState.getNombreCompletoError() != null) {
                    nombreCompletoEditText.setError(getString(registroFormState.getNombreCompletoError()));
@@ -87,10 +90,13 @@ public class RegistroActivity extends AppCompatActivity {
                     showRegistroFailed(registroResult.getError());
                 } else {
                     // El registro ha sido exitoso
-                    ParseUser.getCurrentUser().logOut();
+                    // ParseUser.getCurrentUser().logOut();
                     Toast toast = Toast.makeText(getApplicationContext(), "Registro correcto: " + ParseUser.getCurrentUser().get("nombre_completo"), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 0);
                     toast.show();
+                    /* Mandamos al usuario a la activity de selección de géneros */
+                    Intent intent = new Intent(getApplicationContext(), GenerosActivity.class);
+                    startActivity(intent);
                 }
                 setResult(Activity.RESULT_OK);
 
@@ -128,31 +134,6 @@ public class RegistroActivity extends AppCompatActivity {
         password_1_EditText.addTextChangedListener(afterTextChangedListener);
         password_2_EditText.addTextChangedListener(afterTextChangedListener);
 
-        /*
-        password_2_EditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                // Experimental
-                String sexo;
-                final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
-                final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
-                if (radio_mujer.isChecked())
-                    sexo = "Mujer";
-                else
-                    sexo = "Hombre";
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    registroViewModel.registrar(usernameEditText.getText().toString(),
-                            emailEditText.getText().toString(),
-                            password_1_EditText.getText().toString(),
-                            nombreCompletoEditText.getText().toString(),
-                            sexo);
-                }
-                return false;
-            }
-        });
-         */
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,6 +158,12 @@ public class RegistroActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();
+    }
+
+    public void irAGeneros(View view) {
+        /* Mandamos al usuario a la activity de selección de géneros */
+        Intent intent = new Intent(getApplicationContext(), GenerosActivity.class);
+        startActivity(intent);
     }
 
     public void onRadioButtonClicked(View view) {

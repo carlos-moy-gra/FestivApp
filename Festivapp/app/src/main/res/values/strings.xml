@@ -22,7 +22,7 @@
     <string name="register_failed">"Register failed"</string>
     <string name="checkbox">CheckBox</string>
 
-    <!-- Strings relacionados con SelecArtistas -->
-
     <!-- Strings relacionados con GenerosActivity -->
+    <string name="generos_texto_sup">¿Qúe géneros te gusta escuchar?"</string>
+    <string name="generos_texto_boton_deplazamiento">Botón desplazamiento derecho</string>
 </resources>
