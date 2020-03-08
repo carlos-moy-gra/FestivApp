@@ -25,4 +25,10 @@
     <!-- Strings relacionados con GenerosActivity -->
     <string name="generos_texto_sup">¿Qúe géneros te gusta escuchar?"</string>
     <string name="generos_texto_boton_deplazamiento">Botón desplazamiento derecho</string>
+
+    <!-- Strings relacionados con ArtistasActivity -->
+    <string name="artistas_texto_barra_busqueda">¿A qúe artistas quieres seguir?"</string>
+    <string name="artistas_texto_boton_deplazamiento">Botón desplazamiento derecho</string>
+    <string name="texto_artistas_seguidos">Artistas seguidos</string>
+    <string name="texto_resultado_busqueda">Resultados búsqueda</string>
 </resources>

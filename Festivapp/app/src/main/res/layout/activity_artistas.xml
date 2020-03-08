@@ -2,27 +2,95 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_artistas_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="5dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
     tools:context=".ui.ArtistasActivity">
 
-    <LinearLayout
+    <SearchView
+        android:id="@+id/barra_busqueda_artistas"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:queryHint="@string/artistas_texto_barra_busqueda"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="50dp"
+        tools:layout_conversion_absoluteWidth="300dp" />
+
+    <ImageButton
+        android:id="@+id/boton_continuar_artistas"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#FFFFFFFF"
+        android:contentDescription="@string/artistas_texto_boton_deplazamiento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_keyboard_backspace_black"
+        tools:layout_conversion_absoluteHeight="60dp"
+        tools:layout_conversion_absoluteWidth="60dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gridArtistasSeguidos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="35dp"
+        android:orientation="horizontal"
+        android:scrollbars="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/gridResultadosArtistas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <GridView
+        android:id="@+id/gridResultadosArtistas"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="240dp"
+        android:columnWidth="100dp"
+        android:gravity="start"
+        android:horizontalSpacing="5dp"
+        android:numColumns="4"
+        android:verticalSpacing="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="¿Quieres seguir a algún artista?" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/texto_artistas_seguidos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="11dp"
+        android:text="@string/texto_artistas_seguidos"
+        app:layout_constraintBottom_toTopOf="@+id/gridArtistasSeguidos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barra_busqueda_artistas" />
+
+    <TextView
+        android:id="@+id/texto_resultados_busqueda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/texto_resultado_busqueda"
+        app:layout_constraintBottom_toTopOf="@+id/gridResultadosArtistas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridArtistasSeguidos" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

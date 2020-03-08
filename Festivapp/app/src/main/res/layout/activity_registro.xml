@@ -136,7 +136,7 @@
         android:id="@+id/boton_testeo_generos"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:onClick="irAGeneros"
-        android:text="Ir a Generos" />
+        android:onClick="irAArtistas"
+        android:text="Ir a Artistas" />
 
 </LinearLayout>

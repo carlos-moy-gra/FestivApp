@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginEnd="55dp"
         android:layout_marginRight="55dp"
         android:layout_marginBottom="23dp"
@@ -22,14 +22,14 @@
         android:text="@string/generos_texto_sup"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toTopOf="@+id/gridGeneros"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/boton_continuar_generos"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
+        app:layout_constraintVertical_bias="0.866" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/boton_continuar_generos"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="4dp"
@@ -45,7 +45,6 @@
 
     <GridView
         android:id="@+id/gridGeneros"
-        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginTop="72dp"
         android:columnWidth="200dp"
@@ -55,6 +54,7 @@
         android:verticalSpacing="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
