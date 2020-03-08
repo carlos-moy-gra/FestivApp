@@ -92,15 +92,4 @@
         app:layout_constraintBottom_toTopOf="@+id/gridResultadosArtistas"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridArtistasSeguidos" />
-
-<<<<<<< HEAD
-=======
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:hint="¿Quieres seguir a algún artista?" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
->>>>>>> 03182ce608b67cd0363d07cbeb3e048508fbfae2
 </androidx.constraintlayout.widget.ConstraintLayout>
