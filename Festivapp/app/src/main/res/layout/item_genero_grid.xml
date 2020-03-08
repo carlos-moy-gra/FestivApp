@@ -13,7 +13,7 @@
         android:id="@+id/item_seleccion_genero"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:background="@android:color/holo_red_light"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:text="TextView"
         android:textSize="24sp"
