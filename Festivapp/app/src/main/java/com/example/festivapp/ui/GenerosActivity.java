@@ -2,6 +2,7 @@ package com.example.festivapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -49,7 +50,8 @@ public class GenerosActivity extends AppCompatActivity {
         /* Consulta a la BD para obtener todos los géneros almacenados */
         rellenaListaConGenerosBD();
 
-        /* TODO: Consulta a la BD para que aparezcan marcados los géneros que el usuario sigue actualmente (en el caso de que venga de la activity de registro no hace falta) */
+        /* TODO: Consulta a la BD para que aparezcan marcados los géneros que el usuario sigue actualmente
+            (en el caso de que venga de la activity de registro no hace falta) */
 
         /* Añadimos un listener */
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,9 +77,15 @@ public class GenerosActivity extends AppCompatActivity {
                     String idGenero = generosConId.get(generoSeleccionado);
                     adapter.generosSeguidos.put(generoSeleccionado, idGenero);
                     System.out.println("Género a marcar como seleccionado: " + generoSeleccionado);
+                    //textView.setBackgroundColor();
                     textView.setText("");
                     textView.setBackgroundResource(R.drawable.baseline_check_black_and_red);
 
+                    /*
+                    View backgroundimage = findViewById(R.drawable.baseline_check_black_and_red);
+                    Drawable background = backgroundimage.getBackground();
+                    background.setAlpha(80);
+                     */
                 }
 
             }
