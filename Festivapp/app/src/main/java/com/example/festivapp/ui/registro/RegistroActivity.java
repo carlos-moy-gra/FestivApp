@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,17 +25,26 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.festivapp.R;
 import com.example.festivapp.ui.GenerosActivity;
 import com.example.festivapp.ui.seleccionArtistas.ArtistasActivity;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 public class RegistroActivity extends AppCompatActivity {
 
     private RegistroViewModel registroViewModel;
-
+    private boolean existeEmailEnBD;
+    private boolean existeUsernameEnBD;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ParseUser.getCurrentUser().logOut();
         setContentView(R.layout.activity_registro);
+
+        this.existeEmailEnBD = true;
+        this.existeUsernameEnBD = true;
 
         registroViewModel = ViewModelProviders.of(this, new RegistroViewModelFactory())
                 .get(RegistroViewModel.class);
@@ -139,21 +149,37 @@ public class RegistroActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String sexo;
-                final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
-                final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
-                if (radio_mujer.isChecked())
-                    sexo = "Mujer";
-                else
-                    sexo = "Hombre";
-                registroViewModel.registrar(usernameEditText.getText().toString(),
-                        emailEditText.getText().toString(),
-                        password_1_EditText.getText().toString(),
-                        nombreCompletoEditText.getText().toString(),
-                        sexo);
+                isUsernameInBD(usernameEditText.getText().toString());
+                isEmailInBD(emailEditText.getText().toString());
+                if ((!existeEmailEnBD) && (!existeUsernameEnBD)) {
+                    String sexo;
+                    final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
+                    if (radio_mujer.isChecked())
+                        sexo = "Mujer";
+                    else
+                        sexo = "Hombre";
+                    registroViewModel.registrar(usernameEditText.getText().toString(),
+                            emailEditText.getText().toString(),
+                            password_1_EditText.getText().toString(),
+                            nombreCompletoEditText.getText().toString(),
+                            sexo);
+
+                } else {
+                    if (existeUsernameEnBD && existeEmailEnBD) {
+                        usernameEditText.setError("Username no disponible");
+                        emailEditText.setError("Email no disponible");
+                    } else {
+                        if (existeUsernameEnBD) {
+                            usernameEditText.setError("Username no disponible");
+                            emailEditText.setError(null);
+                        } else {
+                            emailEditText.setError("Email no disponible");
+                            usernameEditText.setError(null);
+                        }
+                    }
+                }
             }
         });
-
     }
 
     private void showRegistroFailed(@StringRes Integer errorString) {
@@ -163,7 +189,7 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     public void irAArtistas(View view) {
-        /* Mandamos al usuario a la activity de selección de géneros */
+        /* Mandamos al usuario a la activity de selección de artistas */
         Intent intent = new Intent(getApplicationContext(), ArtistasActivity.class);
         startActivity(intent);
     }
@@ -210,6 +236,42 @@ public class RegistroActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    public void isUsernameInBD(String username) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        query.whereEqualTo("username", username);
+        try {
+            List<ParseObject> resultList = query.find();
+            if (resultList.size() > 0) {
+                Log.d("User", "Username existe en la BD");
+                this.existeUsernameEnBD = true;
+            } else {
+                Log.d("User", "Username no existe en la BD");
+                this.existeUsernameEnBD = false;
+            }
+        } catch (final ParseException e) {
+            Log.d(null , "Error: " + e.getMessage());
+        }
+
+    }
+
+    public void isEmailInBD(String email) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        query.whereEqualTo("email", email);
+        try {
+            List<ParseObject> resultList = query.find();
+            if (resultList.size() > 0) {
+                Log.d("Email", "email existe en la BD");
+                this.existeEmailEnBD = true;
+            } else {
+                Log.d("Email", "email no existe en la BD");
+                this.existeEmailEnBD = false;
+            }
+        } catch (final ParseException e) {
+            Log.d(null , "Error: " + e.getMessage());
+        }
+
     }
 
 }

@@ -128,27 +128,7 @@ public class ArtistasActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String textoQuery) {
 
-                /* Buscamos en la BD */
-                if (textoQuery.trim().isEmpty()) {
-                    listaResultados.clear();
-                    adapterResultados.notifyDataSetChanged();
-                } else {
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Artista");
-                    query.whereStartsWith("nombre", textoQuery);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> artistasList, ParseException e) {
-                            if (e == null) {
-                                Log.d("Artista", "Obtenidos " + artistasList.size() + " resultados");
-                                for (ParseObject artista : artistasList) {
-                                    listaResultados.add((Artista) artista);
-                                }
-                                adapterResultados.notifyDataSetChanged();
-                            } else {
-                                Log.d("Artista", "Error: " + e.getMessage());
-                            }
-                        }
-                    });
-                }
+                /* No hacemos nada */
 
                 return false;
             }

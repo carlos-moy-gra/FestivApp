@@ -2,7 +2,6 @@ package com.example.festivapp.ui.registro;
 
 import android.util.Log;
 import android.util.Patterns;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -10,30 +9,18 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.festivapp.R;
 import com.example.festivapp.ui.login.LoggedInUserView;
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import org.json.JSONArray;
 
-import java.util.List;
-
-import static com.parse.Parse.getApplicationContext;
-
 public class RegistroViewModel extends ViewModel {
 
     private MutableLiveData<RegistroFormState> registroFormState = new MutableLiveData<>();
     private MutableLiveData<RegistroResult> registroResult = new MutableLiveData<>();
-    private boolean existeEmailEnBD;
-    private boolean existeUsernameEnBD;
 
-    RegistroViewModel() {
-        this.existeEmailEnBD = false;
-        this.existeUsernameEnBD = false;
-    }
+    RegistroViewModel() {}
 
     LiveData<RegistroFormState> getRegistroFormState() {
         return registroFormState;
@@ -95,9 +82,8 @@ public class RegistroViewModel extends ViewModel {
         if (nombreCompleto == null) {
             return false;
         }
-        if (nombreCompleto.trim().isEmpty()) {
+        if (nombreCompleto.trim().isEmpty())
             return false;
-        }
         return true;
     }
 
@@ -109,8 +95,7 @@ public class RegistroViewModel extends ViewModel {
         if (username.trim().isEmpty()) {
             return false;
         }
-        isUsernameInBD(username); // Comprobamos si existe el username en la BD
-        return !existeUsernameEnBD;
+        return true;
     }
 
     // Validación de email
@@ -125,8 +110,7 @@ public class RegistroViewModel extends ViewModel {
         } else {
             return false;
         }
-        isEmailInBD(email); // Comprobamos si existe el email en la BD
-        return !existeEmailEnBD;
+        return true;
     }
 
     // Validación de contraseña
@@ -137,10 +121,7 @@ public class RegistroViewModel extends ViewModel {
         if (password1.trim().isEmpty() || password2.trim().isEmpty()) {
             return false;
         }
-        if (password1.trim().compareTo(password2.trim()) != 0) {
-            return false;
-        }
-        return true;
+        return (password1.trim().compareTo(password2.trim()) == 0);
     }
 
     // Validación de sexo
@@ -148,71 +129,4 @@ public class RegistroViewModel extends ViewModel {
         return (sex_hombre || sex_mujer);
     }
 
-    private void isUsernameInBD(String username) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-        query.whereEqualTo("username", username);
-        try {
-            List<ParseObject> resultList = query.find();
-            if (resultList.size() > 0) {
-                Log.d("User", "Username existe en la BD");
-                existeUsernameEnBD = true;
-            } else {
-                Log.d("User", "Username no existe en la BD");
-                existeUsernameEnBD = false;
-            }
-        } catch (final ParseException e) {
-            Log.d(null , "Error: " + e.getMessage());
-        }
-        /*
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> resultList, ParseException e) {
-                if (e == null) {
-                    if (resultList.size() > 0) {
-                        Log.d("User", "Username existe en la BD");
-                        existeUsernameEnBD = true;
-                    } else {
-                        Log.d("User", "Username no existe en la BD");
-                        existeUsernameEnBD = false;
-                    }
-                } else {
-                    Log.d(null , "Error: " + e.getMessage());
-                }
-            }
-        });
-        */
-    }
-
-    private void isEmailInBD(String email) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-        query.whereEqualTo("email", email);
-        try {
-            List<ParseObject> resultList = query.find();
-            if (resultList.size() > 0) {
-                Log.d("User", "Email existe en la BD");
-                existeEmailEnBD = true;
-            } else {
-                Log.d("User", "Email no existe en la BD");
-                existeEmailEnBD = false;
-            }
-        } catch (final ParseException e) {
-            Log.d(null , "Error: " + e.getMessage());
-        }
-        /*
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> resultList, ParseException e) {
-                if (e == null) {
-                    if (resultList.size() > 0) {
-                        Log.d("User", "Email existe en la BD");
-                        existeEmailEnBD = true;
-                    } else {
-                        Log.d("User", "Email no existe en la BD");
-                        existeEmailEnBD = false;
-                    }
-                } else {
-                    Log.d(null , "Error: " + e.getMessage());
-                }
-            }
-        });
-        */
-    }
 }
