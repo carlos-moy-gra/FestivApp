@@ -11,10 +11,10 @@
         android:id="@+id/item_seleccion_artista_recycler"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_margin="5dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:text="TextView"
         android:textSize="14sp"
-        android:textStyle="bold"
-        android:layout_margin="10dp"/>
+        android:textStyle="bold" />
 </LinearLayout>
