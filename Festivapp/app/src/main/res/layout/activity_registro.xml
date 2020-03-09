@@ -130,12 +130,19 @@
         android:layout_height="wrap_content"
         android:width="@android:dimen/thumbnail_width"
         android:background="#037BF4"
+        android:enabled="false"
         android:text="@string/action_register" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
 
     <Button
         android:id="@+id/boton_testeo_generos"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:width="@android:dimen/thumbnail_width"
+        android:background="#037BF4"
         android:onClick="irAArtistas"
         android:text="Ir a Artistas" />
 
