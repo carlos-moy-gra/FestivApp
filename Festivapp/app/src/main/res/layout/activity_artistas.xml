@@ -9,7 +9,7 @@
     android:padding="5dp"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    tools:context=".ui.ArtistasActivity">
+    tools:context=".ui.seleccionArtistas.ArtistasActivity">
 
     <SearchView
         android:id="@+id/barra_busqueda_artistas"
@@ -92,4 +92,14 @@
         app:layout_constraintBottom_toTopOf="@+id/gridResultadosArtistas"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridArtistasSeguidos" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="SIGUIENTE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
