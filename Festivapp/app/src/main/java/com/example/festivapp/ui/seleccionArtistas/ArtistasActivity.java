@@ -1,5 +1,6 @@
 package com.example.festivapp.ui.seleccionArtistas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,11 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.festivapp.R;
 import com.example.festivapp.data.model.Artista;
+import com.example.festivapp.ui.main.MainActivity;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -27,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ArtistasActivity extends AppCompatActivity {
+
+    final public static String TAG = "Artistas";
 
     private GridView gridViewResultados;
     private RecyclerView recyclerViewSeguidos;
@@ -142,17 +149,18 @@ public class ArtistasActivity extends AppCompatActivity {
                     adapterResultados.notifyDataSetChanged();
                 } else {
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("Artista");
-                    query.whereStartsWith("nombre", textoQuery);
+                    query.whereStartsWith("searchable_nombre", textoQuery);
                     query.findInBackground(new FindCallback<ParseObject>() {
                         public void done(List<ParseObject> artistasList, ParseException e) {
                             if (e == null) {
-                                Log.d("Artista", "Obtenidos " + artistasList.size() + " resultados");
+                                listaResultados.clear();
+                                Log.d(TAG, "Obtenidos " + artistasList.size() + " resultados de artistas");
                                 for (ParseObject artista : artistasList) {
                                     listaResultados.add((Artista) artista);
                                 }
                                 adapterResultados.notifyDataSetChanged();
                             } else {
-                                Log.d("Artista", "Error: " + e.getMessage());
+                                Log.d(TAG, "Error recuperando resultados de la búsqueda de Artistas: " + e.getMessage());
                             }
                         }
                     });
@@ -172,10 +180,57 @@ public class ArtistasActivity extends AppCompatActivity {
                     artistasSeguidos.put(((Artista)artista).getNombre(), ((Artista)artista).getObjectId());
                     adapterSeguidos.notifyDataSetChanged();
                 } else {
-                    // Fallo en la query
+                    Log.d(TAG, "Error: " + e.getMessage());
                 }
             }
         });
+    }
+
+    public void continuar(View view) {
+        if (artistasSeguidos.size() > 0) {
+
+            // Hay artistas seleccionados para seguir
+
+            /* Obtenemos una lista con los objectId de cada uno de los artistas que el usuario ha seleccionado */
+            final ArrayList<String> objectIdList = new ArrayList<>();
+            for (String key : artistasSeguidos.keySet()) {
+                String objectId = artistasSeguidos.get(key);
+                objectIdList.add(objectId);
+            }
+            artistasSeguidos.clear();
+
+            /* Update de artistas en el array de géneros seguidos por el usuario */
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+            query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+                public void done(ParseObject current_user, ParseException e) {
+                    if (e == null) {
+                        JSONArray arrayArtistasSeguidos = new JSONArray();
+                        for (String objectId : objectIdList) {
+                            arrayArtistasSeguidos.put(ParseObject.createWithoutData("Artista", objectId));
+                        }
+                        objectIdList.clear();
+                        current_user.put("artistas_seguidos", arrayArtistasSeguidos);
+                        current_user.saveInBackground();
+
+                        /* Mandamos al usuario a MainActivity */
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Ha ocurrido un error inesperado, inténtalo otra vez", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.TOP, 0, 0);
+                        toast.show();
+                        Log.d(TAG, "Error recuperando usuario: " + e.getMessage());
+                    }
+                }
+            });
+        } else {
+
+            // No hay artistas seleccionados para seguir
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 
 }

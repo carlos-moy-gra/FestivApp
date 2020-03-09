@@ -1,7 +1,8 @@
 <resources>
+
     <string name="app_name">Festivapp</string>
 
-    <!-- Strings relacionados con login y registro -->
+    <!-- Strings relacionados con LoginActivity y RegistroActivity -->
     <string name="prompt_email">Email/Username</string>
     <string name="prompt_nombre_completo">Nombre completo</string>
     <string name="prompt_username">Username</string>
@@ -31,4 +32,12 @@
     <string name="artistas_texto_boton_deplazamiento">Botón desplazamiento derecho</string>
     <string name="texto_artistas_seguidos">Artistas seguidos</string>
     <string name="texto_resultado_busqueda">Resultados búsqueda</string>
+    <string name="title_activity_descubrir">DescubrirActivity</string>
+
+    <!-- Strings relacionados con MainActivity -->
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1_main">Mis festivales</string>
+    <string name="tab_text_2_main">Descubrir</string>
+    <string name="tab_text_3_main">Mapa</string>
+
 </resources>
