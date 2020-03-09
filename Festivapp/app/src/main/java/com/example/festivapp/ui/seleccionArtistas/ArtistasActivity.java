@@ -146,6 +146,7 @@ public class ArtistasActivity extends AppCompatActivity {
                     query.findInBackground(new FindCallback<ParseObject>() {
                         public void done(List<ParseObject> artistasList, ParseException e) {
                             if (e == null) {
+                                listaResultados.clear();
                                 Log.d("Artista", "Obtenidos " + artistasList.size() + " resultados");
                                 for (ParseObject artista : artistasList) {
                                     listaResultados.add((Artista) artista);
