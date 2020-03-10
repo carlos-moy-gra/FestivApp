@@ -14,11 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.mainTabs.TabsMainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".ui.main.DescubrirActivity"
+            android:name=".ui.mainTabs.DescubrirActivity"
             android:label="@string/title_activity_descubrir"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

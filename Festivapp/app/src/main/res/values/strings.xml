@@ -41,4 +41,7 @@
     <string name="tab_text_3_main">Mapa</string>
     <string name="imagen_festival_descripcion">Imagen del logo del festival</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

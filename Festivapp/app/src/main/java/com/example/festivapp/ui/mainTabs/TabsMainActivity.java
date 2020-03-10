@@ -1,4 +1,4 @@
-package com.example.festivapp.ui.main;
+package com.example.festivapp.ui.mainTabs;
 
 import android.os.Bundle;
 
@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class TabsMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
