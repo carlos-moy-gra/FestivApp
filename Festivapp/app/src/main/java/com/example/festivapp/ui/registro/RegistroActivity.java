@@ -7,13 +7,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -23,7 +20,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.festivapp.R;
-import com.example.festivapp.ui.GenerosActivity;
 import com.example.festivapp.ui.seleccionArtistas.ArtistasActivity;
 import com.parse.ParseException;
 import com.parse.ParseObject;

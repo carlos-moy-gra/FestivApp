@@ -1,8 +1,5 @@
-package com.example.festivapp.ui;
+package com.example.festivapp.ui.seleccionGeneros;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -11,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.festivapp.R;
 import com.example.festivapp.data.model.Genero;

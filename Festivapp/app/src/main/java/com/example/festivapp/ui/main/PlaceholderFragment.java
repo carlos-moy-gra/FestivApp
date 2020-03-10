@@ -1,4 +1,4 @@
-package com.example.festivapp.ui.mainTabs;
+package com.example.festivapp.ui.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,7 +26,7 @@ public class PlaceholderFragment extends Fragment {
     public static PlaceholderFragment newInstance(int index) {
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(ARG_SECTION_NUMBER, index);
+        bundle.putInt(ARG_SECTION_NUMBER, index); // pasamos el indice de la sección a través del bundle
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -40,6 +40,9 @@ public class PlaceholderFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         pageViewModel.setIndex(index);
+
+        // Podríamos tener un setListaFestivales o similar
+
     }
 
     @Override
