@@ -1,4 +1,4 @@
-package com.example.festivapp.ui.main;
+package com.example.festivapp.ui.mainTabs;
 
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;

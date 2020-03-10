@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.festivapp.R;
 import com.example.festivapp.data.model.Artista;
-import com.example.festivapp.ui.main.MainActivity;
+import com.example.festivapp.ui.mainTabs.TabsMainActivity;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -213,7 +213,7 @@ public class ArtistasActivity extends AppCompatActivity {
                         current_user.saveInBackground();
 
                         /* Mandamos al usuario a MainActivity */
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), TabsMainActivity.class);
                         startActivity(intent);
 
                     } else {
@@ -228,7 +228,7 @@ public class ArtistasActivity extends AppCompatActivity {
 
             // No hay artistas seleccionados para seguir
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), TabsMainActivity.class);
             startActivity(intent);
         }
     }
