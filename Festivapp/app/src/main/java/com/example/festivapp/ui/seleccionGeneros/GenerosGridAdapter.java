@@ -1,7 +1,6 @@
-package com.example.festivapp.ui;
+package com.example.festivapp.ui.seleccionGeneros;
 
 import android.content.Context;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -38,7 +38,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="tab_text_1_main">Mis festivales</string>
     <string name="tab_text_2_main">Descubrir</string>
-    <string name="tab_text_3_main">Mapa</string>
     <string name="imagen_festival_descripcion">Imagen del logo del festival</string>
 
     <!-- TODO: Remove or change this placeholder text -->
