@@ -20,7 +20,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.festivapp.R;
-import com.example.festivapp.ui.seleccionArtistas.ArtistasActivity;
+import com.example.festivapp.ui.seleccionGeneros.GenerosActivity;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -100,11 +100,11 @@ public class RegistroActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), "Registro correcto: " + ParseUser.getCurrentUser().get("nombre_completo"), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 0);
                     toast.show();
+
                     /* Mandamos al usuario a la activity de selección de géneros */
-                    // Intent intent = new Intent(getApplicationContext(), GenerosActivity.class);
-                    // startActivity(intent);
-                    Intent intent = new Intent(getApplicationContext(), ArtistasActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), GenerosActivity.class);
                     startActivity(intent);
+
                 }
                 setResult(Activity.RESULT_OK);
 
@@ -182,12 +182,6 @@ public class RegistroActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();
-    }
-
-    public void irAArtistas(View view) {
-        /* Mandamos al usuario a la activity de selección de artistas */
-        Intent intent = new Intent(getApplicationContext(), ArtistasActivity.class);
-        startActivity(intent);
     }
 
     public void onRadioButtonClicked(View view) {

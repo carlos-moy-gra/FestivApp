@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.festivapp.R;
+import com.example.festivapp.ui.main.MainActivity;
 import com.example.festivapp.ui.registro.RegistroActivity;
 import com.parse.ParseUser;
 
@@ -70,17 +71,20 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.GONE);
                 if (loginResult.getError() != null) {
                     showLoginFailed(loginResult.getError());
-                    // Login completado incorrectamente
 
+                    // Si el login falla, volvemos a él otra vez
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
+
                     // Login completado correctamente
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
                 }
                 setResult(Activity.RESULT_OK);
 
-                //Complete and destroy login activity once successful
-                finish();
             }
         });
 
@@ -127,8 +131,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + " " + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        ParseUser.getCurrentUser().logOut();
         Toast toast = Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();

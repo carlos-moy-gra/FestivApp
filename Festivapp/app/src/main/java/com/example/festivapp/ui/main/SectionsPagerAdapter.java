@@ -9,6 +9,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.festivapp.R;
+import com.example.festivapp.data.model.Festival;
+
+import java.util.List;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -27,14 +30,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        // Instancia el fragment para la página dada.
+        // Instancia el fragment para la página dada y hace que cambie la posición que indica dentro del grupo de tabs
         return PlaceholderFragment.newInstance(position + 1);
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        // Se le pone a la página el título que le corresponde en función de su posición
+        // Se le pone a la página el título que le corresponde en función de su posición (títulos Tabs)
         return mContext.getResources().getString(TAB_TITLES[position]);
     }
 

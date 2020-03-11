@@ -1,5 +1,6 @@
 package com.example.festivapp.ui.seleccionGeneros;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.festivapp.R;
 import com.example.festivapp.data.model.Genero;
+import com.example.festivapp.ui.seleccionArtistas.ArtistasActivity;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -138,7 +140,9 @@ public class GenerosActivity extends AppCompatActivity {
                         current_user.put("generos_seguidos", arrayGenerosSeguidos);
                         current_user.saveInBackground();
 
-                        /* TODO: Intent a ArtistasActivity */
+                        /* Mandamos al usuario a ArtistasActivity */
+                        Intent intent = new Intent(getApplicationContext(), ArtistasActivity.class);
+                        startActivity(intent);
 
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(), "Ha ocurrido un error inesperado, inténtalo otra vez", Toast.LENGTH_SHORT);
