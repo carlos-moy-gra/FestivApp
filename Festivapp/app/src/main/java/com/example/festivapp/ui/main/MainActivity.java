@@ -5,8 +5,8 @@ import android.os.Bundle;
 
 import com.example.festivapp.R;
 import com.example.festivapp.ui.login.LoginActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.festivapp.ui.seleccionArtistas.ArtistasActivity;
+import com.example.festivapp.ui.seleccionGeneros.GenerosActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.parse.ParseUser;
 
@@ -45,19 +45,6 @@ public class MainActivity extends AppCompatActivity {
             viewPager.setAdapter(sectionsPagerAdapter);
             TabLayout tabs = findViewById(R.id.tabs);
             tabs.setupWithViewPager(viewPager);
-
-            // Botón flotante
-            /* TODO: definir comportamiento del botón flotante */
-            FloatingActionButton fab = findViewById(R.id.fab);
-
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-
         }
     }
 
@@ -69,6 +56,21 @@ public class MainActivity extends AppCompatActivity {
         /* Mandamos al usuario al login */
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
 
+    public void irASeleccionarArtistas(View view) {
+
+        /* Mandamos a ArtistasActivity */
+
+        Intent intent = new Intent(this, ArtistasActivity.class);
+        startActivity(intent);
+    }
+
+    public void irASeleccionarGeneros(View view) {
+
+        /* Mandamos a GenerosActivity */
+
+        Intent intent = new Intent(this, GenerosActivity.class);
+        startActivity(intent);
     }
 }

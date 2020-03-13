@@ -33,7 +33,7 @@ import java.util.Map;
 
 public class ArtistasActivity extends AppCompatActivity {
 
-    final public static String TAG = "Artistas";
+    final public static String TAG = "Selección de Artistas";
 
     private GridView gridViewResultados;
     private RecyclerView recyclerViewSeguidos;
@@ -101,33 +101,31 @@ public class ArtistasActivity extends AppCompatActivity {
             }
         });
 
-        /* Aquí consultamos en la BD los artistas que sigue el usuario y actualizamos el adapter de artistas seguidos
+        /* Aquí consultamos en la BD los artistas que sigue el usuario y actualizamos el adapter de artistas seguidos */
 
-        // Obtenemos el objeto usuario al completo (campos actualizados) TODO: testear su funcionamiento correcto
         ParseQuery<ParseObject> queryUser = ParseQuery.getQuery("_User");
         queryUser.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
             public void done(ParseObject user, ParseException e) {
                 if (e == null) {
-
                     Object object = user.get("artistas_seguidos");
                     ArrayList<ParseObject> artistas_seguidos = (ArrayList<ParseObject>) object;
-                    if (!artistas_seguidos.isEmpty()) {
+                    if ((artistas_seguidos != null) && (!artistas_seguidos.isEmpty())) {
                         for (int i = 0; i < artistas_seguidos.size(); i++) {
                             obtenerArtistasSeguidosUsuario(artistas_seguidos.get(i).getObjectId());
                         }
                     } else {
-                        System.out.println("El Usuario no sigue a ningún artista");
+                        Log.d(TAG, "El usuario no sigue a ningún artista");
                     }
 
                 } else {
                     // Fallo en la query
+                    Log.d(TAG, "Error recuperando los datos del usuario: " + e.getMessage());
                 }
             }
         });
-        */
 
         // Barra de búsqueda
-        artistasSearchView = (SearchView) findViewById(R.id.barra_busqueda_artistas);
+        artistasSearchView = findViewById(R.id.barra_busqueda_artistas);
         artistasSearchView.setIconifiedByDefault(false);
 
         // Añadimos un listener
@@ -177,7 +175,7 @@ public class ArtistasActivity extends AppCompatActivity {
             public void done(ParseObject artista, ParseException e) {
                 if (e == null) {
                     listaSeguidos.add((Artista)artista);
-                    artistasSeguidos.put(((Artista)artista).getNombre(), ((Artista)artista).getObjectId());
+                    artistasSeguidos.put(((Artista)artista).getNombre(), artista.getObjectId());
                     adapterSeguidos.notifyDataSetChanged();
                 } else {
                     Log.d(TAG, "Error: " + e.getMessage());
@@ -189,7 +187,7 @@ public class ArtistasActivity extends AppCompatActivity {
     public void continuar(View view) {
         if (artistasSeguidos.size() > 0) {
 
-            // Hay artistas seleccionados para seguir
+            // Si hay artistas seleccionados para seguir, se realiza un update del campo artistas_seguidos del usuario en la BD
 
             /* Obtenemos una lista con los objectId de cada uno de los artistas que el usuario ha seleccionado */
             final ArrayList<String> objectIdList = new ArrayList<>();
@@ -220,13 +218,13 @@ public class ArtistasActivity extends AppCompatActivity {
                         Toast toast = Toast.makeText(getApplicationContext(), "Ha ocurrido un error inesperado, inténtalo otra vez", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.TOP, 0, 0);
                         toast.show();
-                        Log.d(TAG, "Error recuperando usuario: " + e.getMessage());
+                        Log.d(TAG, "Error recuperando los datos del usuario: " + e.getMessage());
                     }
                 }
             });
         } else {
 
-            // No hay artistas seleccionados para seguir
+            // No hay artistas seleccionados para seguir, mandamos al usuario directamente a la MainActivity (no hay necesidad de realizar una operación de update sobre la BD)
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);

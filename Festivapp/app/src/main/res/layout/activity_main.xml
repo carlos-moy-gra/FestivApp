@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -36,15 +37,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/boton_desconectar_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginRight="15dp"
+                android:background="@drawable/exit_to_app"
+                android:contentDescription="@string/imagen_logout_descripcion"
                 android:onClick="logout"
-                android:text="Log Out"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,16 +58,42 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+        android:background="#FFFFFF"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </androidx.viewpager.widget.ViewPager>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/menu_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/add_black" />
+        android:layout_gravity="end|bottom"
+        fab:fab_addButtonColorNormal="?attr/colorPrimary"
+        fab:fab_addButtonSize="normal"
+        fab:fab_icon="@drawable/add_black"
+        fab:fab_labelStyle="@style/Etiquetas"
+        fab:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_generos"
+            android:onClick="irASeleccionarGeneros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="?attr/colorAccent"
+            fab:fab_icon="@drawable/music_note"
+            fab:fab_size="mini"
+            fab:fab_title="Seleccionar géneros" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_artistas"
+            android:onClick="irASeleccionarArtistas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="?attr/colorAccent"
+            fab:fab_icon="@drawable/person"
+            fab:fab_size="mini"
+            fab:fab_title="Seleccionar artistas" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

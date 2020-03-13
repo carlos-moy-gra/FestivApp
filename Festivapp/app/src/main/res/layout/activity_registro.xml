@@ -137,4 +137,10 @@
         android:layout_width="match_parent"
         android:layout_height="7dp" />
 
+    <ProgressBar
+        android:id="@+id/loading_registro"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:visibility="gone" />
+
 </LinearLayout>

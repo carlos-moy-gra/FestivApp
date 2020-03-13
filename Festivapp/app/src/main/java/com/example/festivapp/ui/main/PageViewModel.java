@@ -2,29 +2,20 @@ package com.example.festivapp.ui.main;
 
 import android.util.Log;
 
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.festivapp.data.model.Artista;
 import com.example.festivapp.data.model.Festival;
-import com.example.festivapp.data.model.Genero;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class PageViewModel extends ViewModel {
 
@@ -50,7 +41,7 @@ public class PageViewModel extends ViewModel {
 
     public LiveData<List<Festival>> getMisFestivales() {
         if (festivalesMisFestivales == null) {
-            festivalesMisFestivales = new MutableLiveData<List<Festival>>();
+            festivalesMisFestivales = new MutableLiveData<>();
             consultarContenidoMisFestivales();
         }
         return festivalesMisFestivales;
@@ -58,14 +49,14 @@ public class PageViewModel extends ViewModel {
 
     public LiveData<List<Festival>> getDescubrir() {
         if (festivalesDescubrir == null) {
-            festivalesDescubrir = new MutableLiveData<List<Festival>>();
+            festivalesDescubrir = new MutableLiveData<>();
             consultarContenidoDescubrir();
         }
         return festivalesDescubrir;
     }
 
 
-    public void consultarContenidoMisFestivales(){
+    private void consultarContenidoMisFestivales(){
 
         // Consulta asíncrona
 
@@ -77,7 +68,7 @@ public class PageViewModel extends ViewModel {
                 if (e == null) {
                     Object object = user.get("festivales_seguidos");
                     ArrayList<ParseObject> festivales_seguidos = (ArrayList<ParseObject>) object;
-                    if (!festivales_seguidos.isEmpty()) {
+                    if ((festivales_seguidos != null) && (!festivales_seguidos.isEmpty())) {
                         int numMax = festivales_seguidos.size();
                         for (int i = 0; i < numMax; i++) {
                             obtenerFestivalesSeguidosUsuario(festivales_seguidos.get(i).getObjectId(), i, numMax - 1);
@@ -93,9 +84,9 @@ public class PageViewModel extends ViewModel {
                 }
             }
         });
-    };
+    }
 
-    public void obtenerFestivalesSeguidosUsuario(String idFestival, final int  numCall, final int numMax) {
+    private void obtenerFestivalesSeguidosUsuario(String idFestival, final int  numCall, final int numMax) {
 
         // Consulta asíncrona
 
@@ -118,7 +109,7 @@ public class PageViewModel extends ViewModel {
         });
     }
 
-    public void consultarContenidoDescubrir(){
+    private void consultarContenidoDescubrir(){
 
         // Consulta asíncrona
 
@@ -130,7 +121,7 @@ public class PageViewModel extends ViewModel {
                 if (e == null) {
                     Object object = user.get("generos_seguidos");
                     ArrayList<ParseObject> generos_seguidos = (ArrayList<ParseObject>) object;
-                    if (!generos_seguidos.isEmpty()) {
+                    if ((generos_seguidos != null) && (!generos_seguidos.isEmpty())) {
                             // Queremos por cada género que sigue el usuario, todos los festivales que pertenecen a dicho género
                             obtenerFestivalesPorGeneros(generos_seguidos);
                     } else {
@@ -142,14 +133,15 @@ public class PageViewModel extends ViewModel {
                 }
             }
         });
-    };
+    }
 
-    public void  obtenerFestivalesPorGeneros(ArrayList<ParseObject> generosUsuario) {
+    private void  obtenerFestivalesPorGeneros(ArrayList<ParseObject> generosUsuario) {
 
-        // TODO: Consulta síncrona (cambiar a asíncrona en el futuro) [Recordar que hay que incluir tambiñen festivales a los que acudan artistas que el usuario sigue]
+        // Consulta asíncrona
 
         resultadosDescubrir.clear(); // clear() preventivo
 
+        /*
         // Va a ser una consulta síncrona
         Map<String, Festival> resultadoFestivales = new HashMap<>();
         // Por cada género
@@ -161,7 +153,7 @@ public class PageViewModel extends ViewModel {
                 List<ParseObject> resul = query.find();
                 Log.d(TAG, "Obtenidos " + resul.size() + " festivales como contenido para el apartado Descubrir [ObjectId Genero: " + generosUsuario.get(i).getObjectId() + "]");
                 for (ParseObject festival : resul) {
-                    resultadoFestivales.put(((Festival)festival).getObjectId(), (Festival)festival);
+                    resultadoFestivales.put(festival.getObjectId(), (Festival)festival);
                 }
             } catch (ParseException e) {
                 Log.d(TAG, "Error obteniendo festival en obtenerFestivalesPorGeneros(): " + e.getMessage());
@@ -171,5 +163,28 @@ public class PageViewModel extends ViewModel {
             resultadosDescubrir.add(resultadoFestivales.get(festivalId));
         }
         festivalesDescubrir.setValue(resultadosDescubrir); // realizamos setValue -> se activan los observers
+        */
+
+        ArrayList<ParseObject> listaGeneros = new ArrayList<>();
+        for (int i = 0; i < generosUsuario.size(); i++) {
+            listaGeneros.add(ParseObject.createWithoutData("Genero", generosUsuario.get(i).getObjectId()));
+        }
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Festival");
+        query.whereContainedIn("generos", listaGeneros);
+        query.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> festivales, ParseException e) {
+                if (e == null) {
+                    Log.d(TAG, "Obtenidos " + festivales.size() + " festivales como contenido para el apartado Descubrir");
+                    for (ParseObject festival : festivales) {
+                        resultadosDescubrir.add((Festival) festival);
+                    }
+                    festivalesDescubrir.setValue(resultadosDescubrir); // realizamos setValue -> se activan los observers
+                } else {
+                    Log.d(TAG, "Error obteniendo festivales en obtenerFestivalesPorGeneros(): " + e.getMessage());
+                }
+            }
+        });
     }
 }

@@ -17,7 +17,7 @@ public class GenerosGridAdapter extends BaseAdapter {
 
     private Context context;
     ArrayList<String> arrayList;
-    Map<String, String> generosSeguidos = new Hashtable<>();
+    Map<String, String> generosSeguidos = new Hashtable<>(); // mapa de géneros seguidos
 
     public GenerosGridAdapter (Context context, ArrayList<String> arrayList) {
         this.context = context;

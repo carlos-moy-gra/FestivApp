@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class RegistroActivity extends AppCompatActivity {
         final Button registerButton = findViewById(R.id.registro_register);
         final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
         final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
+        final ProgressBar loadingProgressBar = findViewById(R.id.loading_registro);
 
         registroViewModel.getRegistroFormState().observe(this, new Observer<RegistroFormState>() {
             @Override
@@ -92,6 +94,9 @@ public class RegistroActivity extends AppCompatActivity {
                 if (registroResult == null) {
                     return;
                 }
+
+                loadingProgressBar.setVisibility(View.GONE);
+
                 if (registroResult.getError() != null) {
                     // El registro ha fallado
                     showRegistroFailed(registroResult.getError());
@@ -154,6 +159,10 @@ public class RegistroActivity extends AppCompatActivity {
                         sexo = "Mujer";
                     else
                         sexo = "Hombre";
+
+                    // Ponemos el loading a funcionar
+                    loadingProgressBar.setVisibility(View.VISIBLE);
+
                     registroViewModel.registrar(usernameEditText.getText().toString(),
                             emailEditText.getText().toString(),
                             password_1_EditText.getText().toString(),
