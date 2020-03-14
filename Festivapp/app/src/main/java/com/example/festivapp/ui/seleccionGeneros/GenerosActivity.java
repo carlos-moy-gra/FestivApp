@@ -16,7 +16,6 @@ import com.example.festivapp.R;
 import com.example.festivapp.data.model.Genero;
 import com.example.festivapp.ui.main.MainActivity;
 import com.example.festivapp.ui.seleccionArtistas.ArtistasActivity;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-
 
 public class GenerosActivity extends AppCompatActivity {
 
@@ -60,7 +58,8 @@ public class GenerosActivity extends AppCompatActivity {
                     ArrayList<ParseObject> generos_seguidos = (ArrayList<ParseObject>) current_user.get("generos_seguidos");
                     if ((generos_seguidos != null) && (!generos_seguidos.isEmpty())) {
 
-                        usuarioEstaEnProcesoDeRegistro = false; // El usuario ya tiene géneros guardados, por lo tanto viene del menú principal
+                        /* El usuario ya tiene géneros guardados, por lo tanto viene del menú principal */
+                        usuarioEstaEnProcesoDeRegistro = false;
 
                         Genero objectGenero;
                         for(ParseObject genero : generos_seguidos) {
@@ -77,7 +76,7 @@ public class GenerosActivity extends AppCompatActivity {
                         Log.d(TAG, "Se ha accedido a la actividad de selección de géneros a través del proceso de registro");
                     }
 
-                    /* Consulta a la BD para obtener todos los géneros almacenados */
+                    // Consulta a la BD para obtener todos los géneros almacenados
                     rellenaListaConGenerosBD();
 
                     // Asociamos el adaptador al gridView
@@ -90,7 +89,7 @@ public class GenerosActivity extends AppCompatActivity {
             }
         });
 
-        /* Añadimos un listener */
+        // Añadimos un listener
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -101,6 +100,7 @@ public class GenerosActivity extends AppCompatActivity {
                 TextView textView = view.findViewById(R.id.item_seleccion_genero);
 
                 if (adapter.generosSeguidos.containsKey(generoSeleccionado)) {
+
                     /* El género ya estaba seleccionado, lo marcamos como no seleccionado */
                     adapter.generosSeguidos.remove(generoSeleccionado);
                     System.out.println("Género a marcar como no seleccionado: " + generoSeleccionado);
@@ -108,6 +108,7 @@ public class GenerosActivity extends AppCompatActivity {
                     textView.setBackgroundColor(0xFFFF4444);
 
                 } else {
+
                     /* El género no estaba seleccionado, lo marcamos como seleccionado */
                     String idGenero = generosConId.get(generoSeleccionado);
                     adapter.generosSeguidos.put(generoSeleccionado, idGenero);
@@ -139,14 +140,12 @@ public class GenerosActivity extends AppCompatActivity {
     }
 
     public void continuar(View view) {
-        if (adapter.generosSeguidos.isEmpty()) {
-
-            /* No hay géneros seleccionados */
+        if (adapter.generosSeguidos.isEmpty()) { // No hay géneros seleccionados
             Toast toast = Toast.makeText(getApplicationContext(), "Debes seleccionar algún género para continuar", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP, 0, 0);
             toast.show();
 
-        } else {
+        } else { // Hay géneros seleccionados
 
             /* Obtenemos una lista con los objectId de cada uno de los géneros que el usuario ha seleccionado */
             final ArrayList<String> objectIdList = new ArrayList<>();
@@ -166,17 +165,17 @@ public class GenerosActivity extends AppCompatActivity {
                         }
                         current_user.put("generos_seguidos", arrayGenerosSeguidos);
                         current_user.saveInBackground();
+
                         // Comprobamos cómo hemos llegado a la actividad
+
                         if (usuarioEstaEnProcesoDeRegistro) {
 
                             /* Mandamos al usuario a ArtistasActivity */
-
                             Intent intent = new Intent(getApplicationContext(), ArtistasActivity.class);
                             startActivity(intent);
                         } else {
 
                             /* Mandamos al usuario a MainActivity (menú principal de la app) */
-
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                         }

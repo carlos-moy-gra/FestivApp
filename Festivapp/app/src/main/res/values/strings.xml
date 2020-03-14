@@ -19,8 +19,8 @@
     <string name="invalid_email">Email inválido</string>
     <string name="invalid_sex_registro">Es obligatorio seleccionar un sexo</string>
     <string name="invalid_nombre_completo">Nombre completo inválido</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="register_failed">"Register failed"</string>
+    <string name="login_failed">"Login incorrecto"</string>
+    <string name="register_failed">"Registro incorrecto"</string>
     <string name="checkbox">CheckBox</string>
 
     <!-- Strings relacionados con GenerosActivity -->

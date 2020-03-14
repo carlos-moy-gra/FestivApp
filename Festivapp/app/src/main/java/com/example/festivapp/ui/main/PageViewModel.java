@@ -88,7 +88,7 @@ public class PageViewModel extends ViewModel {
 
     private void obtenerFestivalesSeguidosUsuario(String idFestival, final int  numCall, final int numMax) {
 
-        // Consulta asíncrona
+        // Consulta asíncrona (podría hacerse con una lista también, probablemente en la próxima versión se modifique)
 
         if (numCall == 0) {
             resultadosMisFestivales.clear(); // clear() preventivo
@@ -119,11 +119,13 @@ public class PageViewModel extends ViewModel {
         queryUser.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
             public void done(ParseObject user, ParseException e) {
                 if (e == null) {
-                    Object object = user.get("generos_seguidos");
-                    ArrayList<ParseObject> generos_seguidos = (ArrayList<ParseObject>) object;
+                    Object object1 = user.get("generos_seguidos");
+                    Object object2 = user.get("artistas_seguidos");
+                    ArrayList<ParseObject> generos_seguidos = (ArrayList<ParseObject>) object1;
+                    ArrayList<ParseObject> artistas_seguidos = (ArrayList<ParseObject>) object2;
                     if ((generos_seguidos != null) && (!generos_seguidos.isEmpty())) {
                             // Queremos por cada género que sigue el usuario, todos los festivales que pertenecen a dicho género
-                            obtenerFestivalesPorGeneros(generos_seguidos);
+                            obtenerFestivalesPorGeneros(generos_seguidos, artistas_seguidos);
                     } else {
                         Log.d(TAG, "Error de consistencia en la BD, el usuario no sigue ningún género musical");
                     }
@@ -135,9 +137,7 @@ public class PageViewModel extends ViewModel {
         });
     }
 
-    private void  obtenerFestivalesPorGeneros(ArrayList<ParseObject> generosUsuario) {
-
-        // Consulta asíncrona
+    private void  obtenerFestivalesPorGeneros(final ArrayList<ParseObject> generosUsuario, final ArrayList<ParseObject> artistasUsuario) {
 
         resultadosDescubrir.clear(); // clear() preventivo
 
@@ -145,23 +145,57 @@ public class PageViewModel extends ViewModel {
         for (int i = 0; i < generosUsuario.size(); i++) {
             listaGeneros.add(ParseObject.createWithoutData("Genero", generosUsuario.get(i).getObjectId()));
         }
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Festival");
-        query.whereContainedIn("generos", listaGeneros);
-        query.orderByAscending("fechaInicio");
-        query.findInBackground(new FindCallback<ParseObject>() {
+        // Query 1
+        ParseQuery<ParseObject> queryGeneros = ParseQuery.getQuery("Festival");
+        queryGeneros.whereContainedIn("generos", listaGeneros);
 
-            @Override
-            public void done(List<ParseObject> festivales, ParseException e) {
-                if (e == null) {
-                    Log.d(TAG, "Obtenidos " + festivales.size() + " festivales como contenido para el apartado Descubrir");
-                    for (ParseObject festival : festivales) {
-                        resultadosDescubrir.add((Festival) festival);
-                    }
-                    festivalesDescubrir.setValue(resultadosDescubrir); // realizamos setValue -> se activan los observers
-                } else {
-                    Log.d(TAG, "Error obteniendo festivales en obtenerFestivalesPorGeneros(): " + e.getMessage());
-                }
+        if ((artistasUsuario != null) && (!artistasUsuario.isEmpty())) {
+
+            /* Si el usuario sigue a artistas */
+            ArrayList<ParseObject> listaArtistas = new ArrayList<>();
+            for (int i = 0; i < artistasUsuario.size(); i++) {
+                listaArtistas.add(ParseObject.createWithoutData("Artista", artistasUsuario.get(i).getObjectId()));
             }
-        });
+            // Query 2
+            ParseQuery<ParseObject> queryArtistas = ParseQuery.getQuery("Festival");
+            queryArtistas.whereContainedIn("artistas", listaArtistas);
+            List<ParseQuery<ParseObject>> listaQueries = new ArrayList<>();
+            listaQueries.add(queryGeneros);
+            listaQueries.add(queryArtistas);
+            // Query main
+            ParseQuery<ParseObject> mainQuery = ParseQuery.or(listaQueries);
+            mainQuery.orderByAscending("fechaInicio");
+            mainQuery.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> festivales, ParseException e) {
+                    if (e == null) {
+                        Log.d(TAG, "Festivales obtenidos en la consulta generos OR artistas: " + festivales.size());
+                        for (ParseObject festival : festivales) {
+                            resultadosDescubrir.add((Festival) festival);
+                        }
+                        festivalesDescubrir.setValue(resultadosDescubrir);
+                    } else {
+                        Log.d(TAG, "Error en la consulta generos OR artistas: " + e.getMessage());
+                    }
+                }
+            });
+        } else {
+
+            /* Si el usuario no sigue a artistas */
+            queryGeneros.orderByAscending("fechaInicio");
+            queryGeneros.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> festivales, ParseException e) {
+                    if (e == null) {
+                        Log.d(TAG, "Festivales obtenidos en la consulta generos: " + festivales.size());
+                        for (ParseObject festival : festivales) {
+                            resultadosDescubrir.add((Festival) festival);
+                        }
+                        festivalesDescubrir.setValue(resultadosDescubrir);
+                    } else {
+                        Log.d(TAG, "Error en la consulta generos OR artistas: " + e.getMessage());
+                    }
+                }
+            });
+        }
     }
+
 }

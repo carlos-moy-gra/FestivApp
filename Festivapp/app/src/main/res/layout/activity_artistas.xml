@@ -39,7 +39,7 @@
         tools:layout_conversion_absoluteWidth="60dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/gridArtistasSeguidos"
+        android:id="@+id/recyclerArtistasSeguidos"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="100dp"
@@ -77,7 +77,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginBottom="11dp"
         android:text="@string/texto_artistas_seguidos"
-        app:layout_constraintBottom_toTopOf="@+id/gridArtistasSeguidos"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerArtistasSeguidos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barra_busqueda_artistas" />
 
@@ -92,6 +92,6 @@
         android:text="@string/texto_resultado_busqueda"
         app:layout_constraintBottom_toTopOf="@+id/gridResultadosArtistas"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridArtistasSeguidos" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerArtistasSeguidos" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

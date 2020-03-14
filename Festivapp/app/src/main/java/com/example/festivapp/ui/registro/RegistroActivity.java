@@ -37,7 +37,7 @@ public class RegistroActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ParseUser.getCurrentUser().logOut();
+
         setContentView(R.layout.activity_registro);
 
         this.existeEmailEnBD = true;
@@ -196,7 +196,7 @@ public class RegistroActivity extends AppCompatActivity {
     public void onRadioButtonClicked(View view) {
 
         final EditText nombreCompletoEditText = findViewById(R.id.registro_nombre_completo);
-        final EditText usernameEditText = findViewById(R.id.registro_nombre_completo);
+        final EditText usernameEditText = findViewById(R.id.registro_username);
         final EditText emailEditText = findViewById(R.id.registro_email);
         final EditText password_1_EditText = findViewById(R.id.registro_password1);
         final EditText password_2_EditText = findViewById(R.id.registro_password2);

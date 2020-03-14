@@ -37,8 +37,7 @@ public class ArtistasRecyclerAdapter extends RecyclerView.Adapter<ArtistasRecycl
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_artista_recycler, parent, false);
         v.setOnClickListener(onClickListener);
-        ArtistasViewHolder vh = new ArtistasViewHolder(v);
-        return vh;
+        return new ArtistasViewHolder(v);
     }
 
     // Reemplaza el contenido de una view (lo invoca el layout manager)

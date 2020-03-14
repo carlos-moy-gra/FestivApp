@@ -121,6 +121,9 @@ public class RegistroViewModel extends ViewModel {
         if (password1.trim().isEmpty() || password2.trim().isEmpty()) {
             return false;
         }
+        if ((password1.trim().length() <= 5) || (password2.trim().length() <= 5)) {
+            return false;
+        }
         return (password1.trim().compareTo(password2.trim()) == 0);
     }
 

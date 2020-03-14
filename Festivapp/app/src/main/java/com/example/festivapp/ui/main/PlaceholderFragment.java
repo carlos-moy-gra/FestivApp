@@ -59,7 +59,7 @@ public class PlaceholderFragment extends Fragment {
                     public void onChanged(@Nullable List<Festival> lista) {
                         actualizarAdapter(lista);
                         System.out.println("Cambiando info");
-                        if (lista.size() > 0)
+                        if ((lista != null) && (lista.size() > 0))
                             pageViewModel.getInfoNoFestivales().setValue("");
                         else
                             pageViewModel.getInfoNoFestivales().setValue("Todavía no sigues a ningún festival");
@@ -84,7 +84,7 @@ public class PlaceholderFragment extends Fragment {
             Bundle savedInstanceState) {
 
         // Inicializamos la lista de festivales del fragment
-        listaFestivales = new ArrayList<Festival>();
+        listaFestivales = new ArrayList<>();
 
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 

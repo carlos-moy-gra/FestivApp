@@ -27,7 +27,6 @@ import android.widget.Toast;
 import com.example.festivapp.R;
 import com.example.festivapp.ui.main.MainActivity;
 import com.example.festivapp.ui.registro.RegistroActivity;
-import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ParseUser.getCurrentUser().logOut();
         setContentView(R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -143,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void registraUsuario(View view) {
+
         /* Mandamos al usuario al formulario de registro de usuario */
         Intent intent = new Intent(this, RegistroActivity.class);
         startActivity(intent);

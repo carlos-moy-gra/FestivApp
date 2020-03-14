@@ -1,12 +1,14 @@
 package com.example.festivapp.data.model;
 
+import android.os.Build;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 import org.json.JSONArray;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Objects;
 
 @ParseClassName("Festival")
 public class Festival extends ParseObject {
@@ -51,5 +53,4 @@ public class Festival extends ParseObject {
     public String toString() {
         return "Nombre del festival: " + this.getNombre() +" Localizacion: " + this.getLocalizacion();
     }
-
 }

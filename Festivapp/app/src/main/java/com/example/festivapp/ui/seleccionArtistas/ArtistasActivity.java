@@ -59,7 +59,7 @@ public class ArtistasActivity extends AppCompatActivity {
         adapterResultados = new ArtistasGridAdapter(this, listaResultados);
         gridViewResultados.setAdapter(adapterResultados);
 
-        /* Añadimos un listener */
+        // Añadimos un listener
         gridViewResultados.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,13 +80,13 @@ public class ArtistasActivity extends AppCompatActivity {
         });
 
         // RecyclerView seguidos
-        recyclerViewSeguidos = findViewById(R.id.gridArtistasSeguidos);
+        recyclerViewSeguidos = findViewById(R.id.recyclerArtistasSeguidos);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewSeguidos.setLayoutManager(layoutManager);
         adapterSeguidos = new ArtistasRecyclerAdapter(listaSeguidos);
         recyclerViewSeguidos.setAdapter(adapterSeguidos);
 
-        /* Añadimos un listener */
+        // Añadimos un listener
         adapterSeguidos.setOnItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,19 +101,21 @@ public class ArtistasActivity extends AppCompatActivity {
             }
         });
 
-        /* Aquí consultamos en la BD los artistas que sigue el usuario y actualizamos el adapter de artistas seguidos */
-
+        // Consultamos en la BD los artistas que sigue el usuario y actualizamos el adapter de artistas seguidos
         ParseQuery<ParseObject> queryUser = ParseQuery.getQuery("_User");
         queryUser.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
             public void done(ParseObject user, ParseException e) {
                 if (e == null) {
+                    // El usuario sigue a artistas
                     Object object = user.get("artistas_seguidos");
                     ArrayList<ParseObject> artistas_seguidos = (ArrayList<ParseObject>) object;
                     if ((artistas_seguidos != null) && (!artistas_seguidos.isEmpty())) {
+                        Log.d(TAG, "El usuario sigue a " + artistas_seguidos.size() + " artistas");
                         for (int i = 0; i < artistas_seguidos.size(); i++) {
                             obtenerArtistasSeguidosUsuario(artistas_seguidos.get(i).getObjectId());
                         }
                     } else {
+                        // El usuario no sigue artistas
                         Log.d(TAG, "El usuario no sigue a ningún artista");
                     }
 
@@ -142,6 +144,7 @@ public class ArtistasActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String textoQuery) {
 
                 /* Buscamos en la BD */
+
                 if (textoQuery.trim().isEmpty()) {
                     listaResultados.clear();
                     adapterResultados.notifyDataSetChanged();
@@ -170,6 +173,8 @@ public class ArtistasActivity extends AppCompatActivity {
     }
 
     public void obtenerArtistasSeguidosUsuario(String idArtista) {
+
+        // Es una consulta asíncrona
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Artista");
         query.getInBackground(idArtista, new GetCallback<ParseObject>() {
             public void done(ParseObject artista, ParseException e) {
@@ -178,57 +183,47 @@ public class ArtistasActivity extends AppCompatActivity {
                     artistasSeguidos.put(((Artista)artista).getNombre(), artista.getObjectId());
                     adapterSeguidos.notifyDataSetChanged();
                 } else {
-                    Log.d(TAG, "Error: " + e.getMessage());
+                    Log.d(TAG, "Error en obtenerArtistasSeguidosUsuario(): " + e.getMessage());
                 }
             }
         });
     }
 
     public void continuar(View view) {
-        if (artistasSeguidos.size() > 0) {
 
-            // Si hay artistas seleccionados para seguir, se realiza un update del campo artistas_seguidos del usuario en la BD
-
-            /* Obtenemos una lista con los objectId de cada uno de los artistas que el usuario ha seleccionado */
-            final ArrayList<String> objectIdList = new ArrayList<>();
-            for (String key : artistasSeguidos.keySet()) {
-                String objectId = artistasSeguidos.get(key);
-                objectIdList.add(objectId);
-            }
-            artistasSeguidos.clear();
-
-            /* Update de artistas en el array de géneros seguidos por el usuario */
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-            query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
-                public void done(ParseObject current_user, ParseException e) {
-                    if (e == null) {
-                        JSONArray arrayArtistasSeguidos = new JSONArray();
-                        for (String objectId : objectIdList) {
-                            arrayArtistasSeguidos.put(ParseObject.createWithoutData("Artista", objectId));
-                        }
-                        objectIdList.clear();
-                        current_user.put("artistas_seguidos", arrayArtistasSeguidos);
-                        current_user.saveInBackground();
-
-                        /* Mandamos al usuario a MainActivity */
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-
-                    } else {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Ha ocurrido un error inesperado, inténtalo otra vez", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.TOP, 0, 0);
-                        toast.show();
-                        Log.d(TAG, "Error recuperando los datos del usuario: " + e.getMessage());
-                    }
-                }
-            });
-        } else {
-
-            // No hay artistas seleccionados para seguir, mandamos al usuario directamente a la MainActivity (no hay necesidad de realizar una operación de update sobre la BD)
-
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+        /* Obtenemos una lista con los objectId de cada uno de los artistas que el usuario ha seleccionado */
+        final ArrayList<String> objectIdList = new ArrayList<>();
+        for (String key : artistasSeguidos.keySet()) {
+            String objectId = artistasSeguidos.get(key);
+            objectIdList.add(objectId);
         }
+        artistasSeguidos.clear();
+
+        /* Update de artistas en el array de géneros seguidos por el usuario */
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+            public void done(ParseObject current_user, ParseException e) {
+                if (e == null) {
+                    JSONArray arrayArtistasSeguidos = new JSONArray();
+                    for (String objectId : objectIdList) {
+                        arrayArtistasSeguidos.put(ParseObject.createWithoutData("Artista", objectId));
+                    }
+                    objectIdList.clear();
+                    current_user.put("artistas_seguidos", arrayArtistasSeguidos);
+                    current_user.saveInBackground();
+
+                    /* Mandamos al usuario a MainActivity */
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Ha ocurrido un error inesperado, inténtalo otra vez", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 0);
+                    toast.show();
+                    Log.d(TAG, "Error recuperando los datos del usuario: " + e.getMessage());
+                }
+            }
+        });
     }
 
 }

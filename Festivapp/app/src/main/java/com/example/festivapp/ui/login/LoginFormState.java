@@ -3,7 +3,7 @@ package com.example.festivapp.ui.login;
 import androidx.annotation.Nullable;
 
 /**
- * Data validation state of the login form.
+ * Validación de datos del formulario de login.
  */
 class LoginFormState {
     @Nullable
