@@ -141,36 +141,13 @@ public class PageViewModel extends ViewModel {
 
         resultadosDescubrir.clear(); // clear() preventivo
 
-        /*
-        // Va a ser una consulta síncrona
-        Map<String, Festival> resultadoFestivales = new HashMap<>();
-        // Por cada género
-        for(int i = 0; i < generosUsuario.size(); i++) {
-            // Buscamos todos los festivales que tengan relación con él
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Festival");
-            query.whereEqualTo("generos", ParseObject.createWithoutData("Genero", generosUsuario.get(i).getObjectId()));
-            try {
-                List<ParseObject> resul = query.find();
-                Log.d(TAG, "Obtenidos " + resul.size() + " festivales como contenido para el apartado Descubrir [ObjectId Genero: " + generosUsuario.get(i).getObjectId() + "]");
-                for (ParseObject festival : resul) {
-                    resultadoFestivales.put(festival.getObjectId(), (Festival)festival);
-                }
-            } catch (ParseException e) {
-                Log.d(TAG, "Error obteniendo festival en obtenerFestivalesPorGeneros(): " + e.getMessage());
-            }
-        }
-        for (String festivalId : resultadoFestivales.keySet()) {
-            resultadosDescubrir.add(resultadoFestivales.get(festivalId));
-        }
-        festivalesDescubrir.setValue(resultadosDescubrir); // realizamos setValue -> se activan los observers
-        */
-
         ArrayList<ParseObject> listaGeneros = new ArrayList<>();
         for (int i = 0; i < generosUsuario.size(); i++) {
             listaGeneros.add(ParseObject.createWithoutData("Genero", generosUsuario.get(i).getObjectId()));
         }
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Festival");
         query.whereContainedIn("generos", listaGeneros);
+        query.orderByAscending("fechaInicio");
         query.findInBackground(new FindCallback<ParseObject>() {
 
             @Override

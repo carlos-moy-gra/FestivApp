@@ -20,14 +20,14 @@ public class FestivalesRecyclerAdapter extends RecyclerView.Adapter<FestivalesRe
     public static class FestivalesViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textViewNombre;
-
-        /* TODO: Aquí añadir los campos comentados cuando en la BD exista esa información sobre los objetos Festival */
-        // public TextView textViewFecha;
-        // public TextView textViewLocalizacion;
+        public TextView textViewFecha;
+        public TextView textViewLocalizacion;
 
         public FestivalesViewHolder(View v) {
             super(v);
             this.textViewNombre = v.findViewById(R.id.nombre_festival);
+            this.textViewFecha = v.findViewById(R.id.fecha_festival);
+            this.textViewLocalizacion = v.findViewById(R.id.localizacion_festival);
         }
     }
 
@@ -52,8 +52,15 @@ public class FestivalesRecyclerAdapter extends RecyclerView.Adapter<FestivalesRe
     public void onBindViewHolder(FestivalesRecyclerAdapter.FestivalesViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        TextView textView = holder.textViewNombre;
-        textView.setText(arrayList.get(position).getNombre());
+        TextView textView_nombreFestival = holder.textViewNombre;
+        TextView textView_fechaFestival = holder.textViewFecha;
+        TextView textView_locFestival = holder.textViewLocalizacion;
+
+        textView_nombreFestival.setText(arrayList.get(position).getNombre());
+        final String contenido_textView_nombreFestival = arrayList.get(position).getFechaInicio() + " - " + arrayList.get(position).getFechaFin();
+        textView_fechaFestival.setText(contenido_textView_nombreFestival);
+        final String contenido_textView_locFestival = arrayList.get(position).getLocalizacion() + ", " + arrayList.get(position).getPais();
+        textView_locFestival.setText(contenido_textView_locFestival);
     }
 
     @Override
@@ -61,7 +68,7 @@ public class FestivalesRecyclerAdapter extends RecyclerView.Adapter<FestivalesRe
         return arrayList.size();
     }
 
-    /* TODO: Aquí habrá que definir que pasa cuando se hace click sobre un festival */
+    /* TODO: Aquí habrá que definir que pasa cuando se hace click sobre un festival (próxima versión) */
     public void setOnItemClickListener(View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }

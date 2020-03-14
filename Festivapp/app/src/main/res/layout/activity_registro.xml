@@ -129,7 +129,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:width="@android:dimen/thumbnail_width"
-        android:background="#037BF4"
+        android:background="@color/colorPrimaryDark"
         android:enabled="false"
         android:text="@string/action_register" />
 

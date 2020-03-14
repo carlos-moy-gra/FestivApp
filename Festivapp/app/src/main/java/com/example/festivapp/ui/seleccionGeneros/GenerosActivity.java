@@ -35,8 +35,6 @@ public class GenerosActivity extends AppCompatActivity {
 
     final public static String TAG = "Selección de Géneros";
 
-    /* TODO: Queda modificar el adapter para que los items que se encuentran en géneros seguidos se puedan mostrar con un tick desde el principio (cuando el usuario viene del menú principal) */
-
     private GridView gridView;
     private GenerosGridAdapter adapter;
     private ArrayList<String> listaGeneros = new ArrayList<>(); // Lista de géneros seleccionados por el usuario (solamente contiene sus nombres)
